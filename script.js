@@ -1,5 +1,24 @@
 const revealItems = document.querySelectorAll(".reveal");
 
+const themeToggle = document.querySelector(".theme-toggle");
+const savedTheme = localStorage.getItem("portfolio-theme");
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.documentElement.dataset.theme = theme;
+  themeToggle.setAttribute("aria-label", isDark ? "라이트 모드로 전환" : "다크 모드로 전환");
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggle.querySelector(".theme-icon").textContent = isDark ? "☀" : "☾";
+}
+
+applyTheme(savedTheme === "dark" ? "dark" : "light");
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  localStorage.setItem("portfolio-theme", nextTheme);
+  applyTheme(nextTheme);
+});
+
 const revealObserver = new IntersectionObserver(
   (entries, observer) => {
     entries.forEach((entry) => {
